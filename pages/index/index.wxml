@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <button bindtap="jonGetPicture"> 选择文件 </button>
+  </view>
+</view>

@@ -1,0 +1,13 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/picture/picture"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "超越来了",
+    "navigationBarTextStyle":"black",
+    "pageOrientation": "auto"
+  }
+}

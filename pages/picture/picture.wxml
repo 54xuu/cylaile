@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="jview-bg">
+    <canvas class="jcanvas" canvas-id="J_canvasBg"></canvas>
+  </view>
+  <view class="jview-select">
+    <canvas class="jcanvas"
+            bindtouchstart="jonTouchstart"
+            bindtouchmove="jonTouchmove"
+            bindtouchend="jonTouchend" canvas-id="J_canvasSelect"></canvas>
+  </view>
+
+</view>
