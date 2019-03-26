@@ -1,6 +1,6 @@
 .jview-bg,
 .jview-select,
-.jview-scene-item {
+.jview-spirit {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -14,4 +14,10 @@
 .jcanvas {
     width: 100%;
     height: 100%;
+}
+.jview-spirit {
+    border: 2rpx dashed red;
+}
+.jview-spirit-active {
+    border: 4rpx solid red;
 }

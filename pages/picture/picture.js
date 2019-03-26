@@ -3,7 +3,7 @@ const app = getApp()
 
 Page({
     data: {
-        sceneList: [],
+        spiritList: [],
     },
     onLoad: function () {
         const screenWidth = app.jonGetSysinfo('screenWidth')
@@ -12,12 +12,12 @@ Page({
             , picturePath = app.jonGetPicture();
         console.log(screenWidth, screenHeight, pixelRatio);
         this.pixelRatio = pixelRatio;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
 
         this.ctxSelect = wx.createCanvasContext('J_canvasSelect');
-        this.ctxSelect.strokeStyle = "red";
-        this.ctxSelect.fillStyle = "white";
         this.ctxSelect.lineWidth = 2;
-        this.ctxSelect.save();
+        this.ctxSelect.strokeStyle = "red";
 
         this.ctx = wx.createCanvasContext('J_canvasBg');
         this.ctx.drawImage(picturePath, 0, 0, screenWidth, screenHeight);
@@ -37,6 +37,9 @@ Page({
             maxX: this.lastPos.x,
             maxY: this.lastPos.y,
         };
+        this.ctxSelect.lineWidth = 2;
+        this.ctxSelect.globalAlpha = 1;
+        this.ctxSelect.strokeStyle = "red";
     },
     jonTouchmove(e) {
         this.currentPos = {
@@ -72,26 +75,28 @@ Page({
             canvasId: 'J_canvasBg',
             success(res) {
                 console.log(res.tempFilePath);
-                const sceneList = that.data.sceneList
-                    , id = sceneList.length + 1;
-                sceneList.push({
+                const spiritList = that.data.spiritList
+                    , id = spiritList.length + 1;
+                spiritList.push({
                     id: id,
                     path: res.tempFilePath,
                     x: that.screenPos.minX * that.pixelRatio,
                     y: that.screenPos.minY * that.pixelRatio,
                     width: width * that.pixelRatio,
                     height: height * that.pixelRatio,
-                    zIndex: 900 + id
+                    zIndex: 900 + id,
+                    active: false
                 });
                 that.setData({
-                    sceneList: sceneList
+                    spiritList: spiritList,
                 });
             }
         });
 
-        // this.ctxSelect.restore();
         // // 全局透明度
-        // this.ctxSelect.globalAlpha = .5;
+        // this.ctxSelect.globalAlpha = .6;
+        // // 白色填充
+        // this.ctxSelect.fillStyle = "white";
         // // 阴影
         // this.ctxSelect.shadowOffsetX = 5;
         // this.ctxSelect.shadowOffsetY = 5;
@@ -107,5 +112,41 @@ Page({
         // this.ctxSelect.lineTo(this.screenPos.minX, this.screenPos.minY);
         // this.ctxSelect.stroke();
         // this.ctxSelect.draw();
+        // 清空
+        // this.ctxSelect.clearRect(0, 0, that.screenWidth, that.screenHeight);
+        // this.ctxSelect.draw();
+
     },
+    jonSpiritTouchstart(e) {
+        const index = (e.currentTarget.dataset.id || 0) - 1;
+        if (index < 0) {
+            return;
+        }
+        this.setData({
+            [`spiritList[${index}].active`]: true
+        });
+    },
+    jonSpiritTouchmove(e) {
+        const index = (e.currentTarget.dataset.id || 0) - 1;
+        if (index < 0) {
+            return;
+        }
+        const currentPos = {
+            x: e.touches[0].pageX,
+            y: e.touches[0].pageY
+        };
+        this.setData({
+            [`spiritList[${index}].x`]: currentPos.x,
+            [`spiritList[${index}].y`]: currentPos.y,
+        });
+    },
+    jonSpiritTouchend(e) {
+        const index = (e.currentTarget.dataset.id || 0) - 1;
+        if (index < 0) {
+            return;
+        }
+        this.setData({
+            [`spiritList[${index}].active`]: false
+        });
+    }
 })
