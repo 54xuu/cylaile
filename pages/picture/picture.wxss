@@ -1,5 +1,6 @@
 .jview-bg,
-.jview-select {
+.jview-select,
+.jview-scene-item {
     position: absolute;
     width: 100%;
     height: 100%;

@@ -3,10 +3,13 @@
     <canvas class="jcanvas" canvas-id="J_canvasBg"></canvas>
   </view>
   <view class="jview-select">
-    <canvas class="jcanvas"
+    <canvas class="jcanvas-select jcanvas"
             bindtouchstart="jonTouchstart"
             bindtouchmove="jonTouchmove"
             bindtouchend="jonTouchend" canvas-id="J_canvasSelect"></canvas>
   </view>
-
+  <cover-view class="jview-scene-item" wx:for="{{ sceneList }}" wx:key="id"
+              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
+    <cover-image src="{{ item.path }}"></cover-image>
+  </cover-view>
 </view>
