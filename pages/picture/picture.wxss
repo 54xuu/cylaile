@@ -1,23 +1,30 @@
 .jview-bg,
 .jview-select,
-.jview-spirit {
+.jview-spirit,
+.jview-spirit-old {
     position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
     z-index: 100;
+    overflow: hidden;
 }
 .jview-select {
-    z-index: 900;
+    z-index: 500;
 }
 .jcanvas {
     width: 100%;
     height: 100%;
 }
 .jview-spirit {
-    border: 2rpx dashed red;
+    /*border: 2rpx dashed red;*/
+    border-radius: 6rpx;
+}
+.jview-spirit-old {
+    background: rgba(255,255,255,.8);
+    border-radius: 6rpx;
 }
 .jview-spirit-active {
-    border: 4rpx solid red;
+    /*border: 4rpx solid red;*/
 }

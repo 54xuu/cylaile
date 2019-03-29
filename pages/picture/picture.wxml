@@ -8,13 +8,18 @@
             bindtouchmove="jonTouchmove"
             bindtouchend="jonTouchend" canvas-id="J_canvasSelect"></canvas>
   </view>
+  <cover-view class="jview-spirit-old"
+              wx:for="{{ spiritListOld }}" wx:key="id"
+              data-id="{{ item.id }}"
+              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
+  </cover-view>
   <cover-view class="jview-spirit{{ item.active ? ' jview-spirit-active' : ''}}"
               wx:for="{{ spiritList }}" wx:key="id"
               data-id="{{ item.id }}"
               catchtouchstart="jonSpiritTouchstart"
               catchtouchmove="jonSpiritTouchmove"
               catchtouchend="jonSpiritTouchend"
-              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
+              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
     <cover-image src="{{ item.path }}"></cover-image>
   </cover-view>
 </view>

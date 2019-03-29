@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "超越来了",
+  "disableScroll": true,
   "usingComponents": {}
 }
