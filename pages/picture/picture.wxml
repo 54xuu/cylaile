@@ -1,25 +1,42 @@
 <view class="container">
-  <view class="jview-bg">
-    <canvas class="jcanvas" canvas-id="J_canvasBg"></canvas>
-  </view>
-  <view class="jview-select">
-    <canvas class="jcanvas-select jcanvas"
-            bindtouchstart="jonTouchstart"
-            bindtouchmove="jonTouchmove"
-            bindtouchend="jonTouchend" canvas-id="J_canvasSelect"></canvas>
-  </view>
-  <cover-view class="jview-spirit-old"
-              wx:for="{{ spiritListOld }}" wx:key="id"
-              data-id="{{ item.id }}"
-              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
-  </cover-view>
-  <cover-view class="jview-spirit{{ item.active ? ' jview-spirit-active' : ''}}"
-              wx:for="{{ spiritList }}" wx:key="id"
-              data-id="{{ item.id }}"
-              catchtouchstart="jonSpiritTouchstart"
-              catchtouchmove="jonSpiritTouchmove"
-              catchtouchend="jonSpiritTouchend"
-              style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
-    <cover-image src="{{ item.path }}"></cover-image>
-  </cover-view>
+    <view class="jtoolbar" style="height: {{ toolbar.height }}px;">
+        <view class="jtoolbar-left">
+            <van-slider custom-class="jslider" value="50" bar-height="4px"
+                        bind:drag="jonScaleChange" />
+        </view>
+        <view class="jtoolbar-center">
+1
+        </view>
+        <view class="jtoolbar-right">
+            <van-slider custom-class="jslider" value="50" bar-height="4px"
+                        bind:drag="jonRotateChange" />
+        </view>
+    </view>
+    <view class="jview-bg">
+        <canvas class="jcanvas"
+                style="height: {{ sceneCanvas.height }}px; width: {{ sceneCanvas.width }}px;"
+                canvas-id="J_canvasBg"></canvas>
+    </view>
+    <view class="jview-select">
+        <canvas class="jcanvas-select jcanvas"
+                style="height: {{ sceneCanvas.height }}px; width: {{ sceneCanvas.width }}px;"
+                bindtouchstart="jonTouchstart"
+                bindtouchmove="jonTouchmove"
+                bindtouchend="jonTouchend"
+                canvas-id="J_canvasSelect"></canvas>
+    </view>
+    <cover-view class="jview-spirit-old"
+                wx:for="{{ spiritListOld }}" wx:key="id"
+                data-id="{{ item.id }}"
+                style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
+    </cover-view>
+    <cover-view class="jview-spirit{{ item.active ? ' jview-spirit-active' : ''}}"
+                wx:for="{{ spiritList }}" wx:key="id"
+                data-id="{{ item.id }}"
+                catchtouchstart="jonSpiritTouchstart"
+                catchtouchmove="jonSpiritTouchmove"
+                catchtouchend="jonSpiritTouchend"
+                style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
+        <cover-image src="{{ item.path }}"></cover-image>
+    </cover-view>
 </view>

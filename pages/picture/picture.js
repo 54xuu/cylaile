@@ -5,27 +5,54 @@ Page({
     data: {
         spiritList: [],
         spiritListOld: [],
+        toolbar: {
+            height: 50
+        },
+        sceneCanvas: {
+            width: 100,
+            height: 100,
+        },
     },
     onLoad: function () {
         const screenWidth = app.jonGetSysinfo('screenWidth')
             , screenHeight = app.jonGetSysinfo('screenHeight')
             , pixelRatio = app.jonGetSysinfo('pixelRatio') || 2
-            , picturePath = app.jonGetPicture();
+            , picturePath = app.jonGetPicture()
+            , sceneWidth = screenWidth
+            , sceneHeight = screenHeight - this.data.toolbar.height;
         console.log(screenWidth, screenHeight, pixelRatio);
+        this.setData({
+            ['sceneCanvas.width']: sceneWidth * pixelRatio,
+            ['sceneCanvas.height']: sceneHeight * pixelRatio,
+        });
         this.pixelRatio = pixelRatio;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        this.spiritPoint = {};
+        this.selectSpiritList = [];
 
         this.ctxSelect = wx.createCanvasContext('J_canvasSelect');
         this.ctxSelect.lineWidth = 2;
         this.ctxSelect.strokeStyle = "red";
 
         this.ctx = wx.createCanvasContext('J_canvasBg');
-        this.ctx.drawImage(picturePath, 0, 0, screenWidth, screenHeight);
+        this.ctx.drawImage(picturePath, 0, 0, sceneWidth, sceneHeight);
         this.ctx.draw();
     },
-    onShow: function () {
+    onResize(res) {
+        // 新的显示区域宽度
+        const screenWidth = res.size.windowWidth
+            // 新的显示区域高度
+            , screenHeight = res.size.windowHeight
+            , sceneWidth = screenWidth
+            , sceneHeight = screenHeight - this.data.toolbar.height
+            , picturePath = app.jonGetPicture()
+            , pixelRatio = app.jonGetSysinfo('pixelRatio') || 2;
+        this.setData({
+            ['sceneCanvas.width']: sceneWidth * pixelRatio,
+            ['sceneCanvas.height']: sceneHeight * pixelRatio,
+        });
+        this.ctx.drawImage(picturePath, 0, 0, sceneWidth, sceneHeight);
+        this.ctx.draw();
     },
 
     jonTouchstart(e) {
@@ -83,7 +110,7 @@ Page({
                         id: id,
                         path: res.tempFilePath,
                         x: that.screenPos.minX * that.pixelRatio,
-                        y: that.screenPos.minY * that.pixelRatio,
+                        y: (that.screenPos.minY + that.data.toolbar.height) * that.pixelRatio,
                         width: width * that.pixelRatio,
                         height: height * that.pixelRatio,
                         zIndex: 500 + id,
@@ -99,6 +126,7 @@ Page({
                     spiritList: spiritList,
                     spiritListOld: spiritListOld,
                 });
+                that.spiritSelectIndex = spiritList.length;
             }
         });
 
@@ -122,8 +150,8 @@ Page({
         // this.ctxSelect.stroke();
         // this.ctxSelect.draw();
         // 清空
-        // this.ctxSelect.clearRect(0, 0, that.screenWidth, that.screenHeight);
-        // this.ctxSelect.draw();
+        this.ctxSelect.clearRect(0, 0, that.screenWidth, that.screenHeight);
+        this.ctxSelect.draw();
 
     },
     jonSpiritTouchstart(e) {
@@ -132,8 +160,9 @@ Page({
             return;
         }
         const that = this;
+        that.spiritSelectIndex = index + 1;
         // if (e.touches.length < 2) {
-            this.spiritPoint = {
+            this.selectSpiritList[index] = {
                 x: e.touches[0].pageX * that.pixelRatio,
                 y: e.touches[0].pageY * that.pixelRatio,
             };
@@ -159,11 +188,11 @@ Page({
             , touchY = e.touches[0].pageY * that.pixelRatio;
         // if (e.touches.length < 2 && that.spiritPoint.hasOwnProperty('x')) {
             // 移动
-            const diffx = touchX - that.spiritPoint.x
-                , diffy = touchY - that.spiritPoint.y
+            const diffx = touchX - that.selectSpiritList[index].x
+                , diffy = touchY - that.selectSpiritList[index].y
                 , left = that.data.spiritList[index].x + diffx
                 , top = that.data.spiritList[index].y + diffy;
-            that.spiritPoint = {
+            that.selectSpiritList[index] = {
                 x: touchX,
                 y: touchY,
             };
@@ -203,6 +232,23 @@ Page({
         }
         this.setData({
             [`spiritList[${index}].active`]: false
+        });
+    },
+    jonScaleChange(e) {
+        const spiritSelectIndex = (this.spiritSelectIndex || 0) - 1;
+        let val = e.detail.value / 50;
+        if (val < .4) {
+            val = .4;
+        }
+        this.setData({
+            [`spiritList[${spiritSelectIndex}].scale`]: val,
+        });
+    },
+    jonRotateChange(e) {
+        const spiritSelectIndex = (this.spiritSelectIndex || 0) - 1;
+        const val = (e.detail.value - 50) * (180 / 50);
+        this.setData({
+            [`spiritList[${spiritSelectIndex}].rotate`]: val,
         });
     }
 })

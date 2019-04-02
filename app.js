@@ -1,7 +1,8 @@
 //app.js
 App({
     onLaunch: function () {
-        this.globalData.systemInfo = wx.getSystemInfoSync()
+        this.globalData.systemInfo = wx.getSystemInfoSync();
+        console.log(this.globalData.systemInfo);
     },
     globalData: {
         systemInfo: {},

@@ -8,6 +8,6 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "超越来了",
     "navigationBarTextStyle":"black",
-    "pageOrientation": "auto"
+    "pageOrientation": "portrait"
   }
 }

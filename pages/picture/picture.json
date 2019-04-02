@@ -1,5 +1,10 @@
 {
   "navigationBarTitleText": "超越来了",
   "disableScroll": true,
-  "usingComponents": {}
+  "pageOrientation": "auto",
+  "usingComponents": {
+    "van-slider": "/packages/slider/index",
+    "van-row": "/packages/row/index",
+    "van-col": "/packages/col/index"
+  }
 }

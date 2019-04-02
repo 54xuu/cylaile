@@ -4,18 +4,17 @@ const app = getApp()
 
 Page({
     data: {
-
     },
     // 选择图片
     jonGetPicture: function () {
-        const that = this
+        const that = this;
         wx.chooseImage({
             count: 1,
             success(res) {
-                app.jonSetPicture(res.tempFilePaths[0])
+                app.jonSetPicture(res.tempFilePaths[0]);
                 wx.navigateTo({
                     url: '../picture/picture'
-                })
+                });
             }
         })
     },

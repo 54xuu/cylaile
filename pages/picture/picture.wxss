@@ -4,22 +4,18 @@
 .jview-spirit-old {
     position: absolute;
     width: 100%;
-    height: 100%;
     left: 0;
-    top: 0;
+    top: 100rpx;
     z-index: 100;
     overflow: hidden;
 }
 .jview-select {
     z-index: 500;
 }
-.jcanvas {
-    width: 100%;
-    height: 100%;
-}
 .jview-spirit {
     /*border: 2rpx dashed red;*/
     border-radius: 6rpx;
+    box-shadow:0 4rpx 16rpx rgba(0,0,0,0.2);
 }
 .jview-spirit-old {
     background: rgba(255,255,255,.8);
@@ -27,4 +23,25 @@
 }
 .jview-spirit-active {
     /*border: 4rpx solid red;*/
+    box-shadow:0 16rpx 16rpx rgba(0,0,0,0.4);
+}
+.jtoolbar {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    /*background: #fafafa;*/
+    background: #fff;
+    z-index: 999;
+    display: flex;
+}
+.jtoolbar-left,
+.jtoolbar-right {
+    flex: 1;
+}
+.jtoolbar-center {
+    width: 100rpx;
+}
+.jslider {
+    margin: 44rpx 16rpx 0 16rpx;
 }
