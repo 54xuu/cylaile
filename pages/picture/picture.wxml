@@ -1,14 +1,18 @@
 <view class="container">
     <view class="jtoolbar" style="height: {{ toolbar.height }}px;">
         <view class="jtoolbar-left">
-            <van-slider custom-class="jslider" value="50" bar-height="4px"
+            <van-slider custom-class="jslider"
+                        active-color="#f44"
+                        value="50" bar-height="4px"
                         bind:drag="jonScaleChange" />
         </view>
         <view class="jtoolbar-center">
 1
         </view>
         <view class="jtoolbar-right">
-            <van-slider custom-class="jslider" value="50" bar-height="4px"
+            <van-slider custom-class="jslider"
+                        active-color="#f44"
+                        value="50" bar-height="4px"
                         bind:drag="jonRotateChange" />
         </view>
     </view>
@@ -28,7 +32,7 @@
     <cover-view class="jview-spirit-old"
                 wx:for="{{ spiritListOld }}" wx:key="id"
                 data-id="{{ item.id }}"
-                style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx;">
+                style="z-index: {{ item.zIndex }}; width: {{ item.width }}px; height: {{ item.height }}px; left: {{ item.x }}px; top: {{ item.y }}px;">
     </cover-view>
     <cover-view class="jview-spirit{{ item.active ? ' jview-spirit-active' : ''}}"
                 wx:for="{{ spiritList }}" wx:key="id"
@@ -36,7 +40,7 @@
                 catchtouchstart="jonSpiritTouchstart"
                 catchtouchmove="jonSpiritTouchmove"
                 catchtouchend="jonSpiritTouchend"
-                style="z-index: {{ item.zIndex }}; width: {{ item.width }}rpx; height: {{ item.height }}rpx; left: {{ item.x }}rpx; top: {{ item.y }}rpx; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
+                style="z-index: {{ item.zIndex }}; width: {{ item.width }}px; height: {{ item.height }}px; left: {{ item.x }}px; top: {{ item.y }}px; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
         <cover-image src="{{ item.path }}"></cover-image>
     </cover-view>
 </view>

@@ -5,7 +5,7 @@
     position: absolute;
     width: 100%;
     left: 0;
-    top: 100rpx;
+    top: 40px;
     z-index: 100;
     overflow: hidden;
 }
@@ -13,17 +13,17 @@
     z-index: 500;
 }
 .jview-spirit {
-    /*border: 2rpx dashed red;*/
+    border: 2rpx solid white;
     border-radius: 6rpx;
-    box-shadow:0 4rpx 16rpx rgba(0,0,0,0.2);
+    /*box-shadow:0 4rpx 16rpx rgba(0,0,0,0.2);*/
 }
 .jview-spirit-old {
     background: rgba(255,255,255,.8);
     border-radius: 6rpx;
 }
 .jview-spirit-active {
-    /*border: 4rpx solid red;*/
-    box-shadow:0 16rpx 16rpx rgba(0,0,0,0.4);
+    border: 2rpx solid #f44;
+    /*box-shadow:0 16rpx 16rpx rgba(0,0,0,0.4);*/
 }
 .jtoolbar {
     position: absolute;
@@ -32,7 +32,8 @@
     left: 0;
     /*background: #fafafa;*/
     background: #fff;
-    z-index: 999;
+    /*background: red;*/
+    z-index: 990;
     display: flex;
 }
 .jtoolbar-left,
@@ -43,5 +44,5 @@
     width: 100rpx;
 }
 .jslider {
-    margin: 44rpx 16rpx 0 16rpx;
+    margin: 15px 16rpx 0 16rpx;
 }

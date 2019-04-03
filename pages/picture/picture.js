@@ -6,7 +6,7 @@ Page({
         spiritList: [],
         spiritListOld: [],
         toolbar: {
-            height: 50
+            height: 40
         },
         sceneCanvas: {
             width: 100,
@@ -16,8 +16,8 @@ Page({
     onLoad: function () {
         const screenWidth = app.jonGetSysinfo('screenWidth')
             , screenHeight = app.jonGetSysinfo('screenHeight')
-            , pixelRatio = app.jonGetSysinfo('pixelRatio') || 2
-            , picturePath = app.jonGetPicture()
+            , pixelRatio = 1
+            , selectImage = app.jonGetPicture()
             , sceneWidth = screenWidth
             , sceneHeight = screenHeight - this.data.toolbar.height;
         console.log(screenWidth, screenHeight, pixelRatio);
@@ -28,6 +28,7 @@ Page({
         this.pixelRatio = pixelRatio;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
+        this.spiritSelectIndex = 0;
         this.selectSpiritList = [];
 
         this.ctxSelect = wx.createCanvasContext('J_canvasSelect');
@@ -35,7 +36,7 @@ Page({
         this.ctxSelect.strokeStyle = "red";
 
         this.ctx = wx.createCanvasContext('J_canvasBg');
-        this.ctx.drawImage(picturePath, 0, 0, sceneWidth, sceneHeight);
+        this.ctx.drawImage(selectImage.path, 0, 0, screenWidth, screenWidth / selectImage.width * selectImage.height);
         this.ctx.draw();
     },
     onResize(res) {
@@ -43,15 +44,21 @@ Page({
         const screenWidth = res.size.windowWidth
             // 新的显示区域高度
             , screenHeight = res.size.windowHeight
+            , isPortrait = screenWidth < screenHeight
             , sceneWidth = screenWidth
             , sceneHeight = screenHeight - this.data.toolbar.height
-            , picturePath = app.jonGetPicture()
-            , pixelRatio = app.jonGetSysinfo('pixelRatio') || 2;
+            , selectImage = app.jonGetPicture()
+            , pixelRatio = 1;
         this.setData({
             ['sceneCanvas.width']: sceneWidth * pixelRatio,
             ['sceneCanvas.height']: sceneHeight * pixelRatio,
         });
-        this.ctx.drawImage(picturePath, 0, 0, sceneWidth, sceneHeight);
+        this.ctx.drawImage(selectImage.path,
+            0, isPortrait ? 0 : this.data.toolbar.height * 2,
+            selectImage.width, selectImage.height,
+            0, 0,
+            screenWidth, isPortrait ? screenWidth / selectImage.width * selectImage.height
+                : screenHeight);
         this.ctx.draw();
     },
 
@@ -116,8 +123,11 @@ Page({
                         zIndex: 500 + id,
                     };
                 spiritListOld.push(spirit);
+                if (that.spiritSelectIndex > 0) {
+                    spiritList[that.spiritSelectIndex - 1].active = false;
+                }
                 spiritList.push(Object.assign({
-                    active: false,
+                    active: true,
                     scale: 1,
                     rotate: 0,
                     zIndex: 700 + id
@@ -160,12 +170,17 @@ Page({
             return;
         }
         const that = this;
+        if (that.spiritSelectIndex > 0) {
+            this.setData({
+                [`spiritList[${that.spiritSelectIndex - 1}].active`]: false
+            });
+        }
         that.spiritSelectIndex = index + 1;
         // if (e.touches.length < 2) {
-            this.selectSpiritList[index] = {
-                x: e.touches[0].pageX * that.pixelRatio,
-                y: e.touches[0].pageY * that.pixelRatio,
-            };
+        this.selectSpiritList[index] = {
+            x: e.touches[0].pageX * that.pixelRatio,
+            y: e.touches[0].pageY * that.pixelRatio,
+        };
         // } else {
         //     this.spiritPoint = {
         //         x1: e.touches[0].pageX * that.pixelRatio,
@@ -230,15 +245,15 @@ Page({
         if (index < 0) {
             return;
         }
-        this.setData({
-            [`spiritList[${index}].active`]: false
-        });
+        // this.setData({
+        //     [`spiritList[${index}].active`]: false
+        // });
     },
     jonScaleChange(e) {
         const spiritSelectIndex = (this.spiritSelectIndex || 0) - 1;
         let val = e.detail.value / 50;
-        if (val < .4) {
-            val = .4;
+        if (val < .6) {
+            val = .6;
         }
         this.setData({
             [`spiritList[${spiritSelectIndex}].scale`]: val,

@@ -11,9 +11,19 @@ Page({
         wx.chooseImage({
             count: 1,
             success(res) {
-                app.jonSetPicture(res.tempFilePaths[0]);
-                wx.navigateTo({
-                    url: '../picture/picture'
+                const selectImage = {
+                    path: res.tempFilePaths[0]
+                };
+                wx.getImageInfo({
+                    src: selectImage.path,
+                    success(res) {
+                        selectImage.width = res.width;
+                        selectImage.height = res.height;
+                        app.jonSetPicture(selectImage);
+                        wx.navigateTo({
+                            url: '../picture/picture'
+                        });
+                    }
                 });
             }
         })

@@ -6,13 +6,13 @@ App({
     },
     globalData: {
         systemInfo: {},
-        picturePath: ''
+        selectImage: {}
     },
-    jonSetPicture: function (path) {
-        this.globalData.picturePath = path;
+    jonSetPicture: function (img) {
+        this.globalData.selectImage = img;
     },
     jonGetPicture: function () {
-        return this.globalData.picturePath;
+        return this.globalData.selectImage;
     },
     jonGetSysinfo: function (key) {
         return this.globalData.systemInfo[key] || 0;
