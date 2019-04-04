@@ -1,5 +1,34 @@
 const util = require('../../utils/util.js')
 const app = getApp()
+const spiritAppendFun = function (res, isCySpirit = false) {
+    const spiritList = this.data.spiritList
+        , spiritListOld = this.data.spiritListOld
+        , id = spiritList.length + 1
+        , spirit = {
+        id: id,
+        path: res.tempFilePath,
+        x: isCySpirit ? this.screenWidth * 0.5 : this.screenPos.minX * this.pixelRatio,
+        y: isCySpirit ? this.screenHeight * 0.5 : (this.screenPos.minY + this.data.toolbar.height) * this.pixelRatio,
+        width: isCySpirit ? 100 : (this.screenPos.maxX - this.screenPos.minX) * this.pixelRatio,
+        height: isCySpirit ? 100 : (this.screenPos.maxY - this.screenPos.minY) * this.pixelRatio,
+        zIndex: 500 + id,
+    };
+    spiritListOld.push(spirit);
+    if (this.spiritSelectIndex > 0) {
+        spiritList[this.spiritSelectIndex - 1].active = false;
+    }
+    spiritList.push(Object.assign({
+        active: true,
+        scale: 1,
+        rotate: 0,
+        zIndex: 700 + id
+    }, spirit));
+    this.setData({
+        spiritList: spiritList,
+        spiritListOld: spiritListOld,
+    });
+    this.spiritSelectIndex = spiritList.length;
+};
 
 Page({
     data: {
@@ -12,6 +41,20 @@ Page({
             width: 100,
             height: 100,
         },
+        cySpiritHide: false,
+        cySpiritList: [{
+            id: 1,
+            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+        }, {
+            id: 2,
+            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+        }, {
+            id: 3,
+            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+        }, {
+            id: 4,
+            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+        }]
     },
     onLoad: function () {
         const screenWidth = app.jonGetSysinfo('screenWidth')
@@ -104,39 +147,13 @@ Page({
             , width = this.screenPos.maxX - this.screenPos.minX
             , height = this.screenPos.maxY - this.screenPos.minY;
         wx.canvasToTempFilePath({
-            x: that.screenPos.minX,
-            y: that.screenPos.minY,
+            x: this.screenPos.minX,
+            y: this.screenPos.minY,
             width: width, height: height,
             destWidth: width, destHeight: height,
             canvasId: 'J_canvasBg',
             success(res) {
-                const spiritList = that.data.spiritList
-                    , spiritListOld = that.data.spiritListOld
-                    , id = spiritList.length + 1
-                    , spirit = {
-                        id: id,
-                        path: res.tempFilePath,
-                        x: that.screenPos.minX * that.pixelRatio,
-                        y: (that.screenPos.minY + that.data.toolbar.height) * that.pixelRatio,
-                        width: width * that.pixelRatio,
-                        height: height * that.pixelRatio,
-                        zIndex: 500 + id,
-                    };
-                spiritListOld.push(spirit);
-                if (that.spiritSelectIndex > 0) {
-                    spiritList[that.spiritSelectIndex - 1].active = false;
-                }
-                spiritList.push(Object.assign({
-                    active: true,
-                    scale: 1,
-                    rotate: 0,
-                    zIndex: 700 + id
-                }, spirit));
-                that.setData({
-                    spiritList: spiritList,
-                    spiritListOld: spiritListOld,
-                });
-                that.spiritSelectIndex = spiritList.length;
+                spiritAppendFun.call(that, res);
             }
         });
 
@@ -160,7 +177,7 @@ Page({
         // this.ctxSelect.stroke();
         // this.ctxSelect.draw();
         // 清空
-        this.ctxSelect.clearRect(0, 0, that.screenWidth, that.screenHeight);
+        this.ctxSelect.clearRect(0, 0, this.screenWidth, this.screenHeight);
         this.ctxSelect.draw();
 
     },
@@ -170,23 +187,23 @@ Page({
             return;
         }
         const that = this;
-        if (that.spiritSelectIndex > 0) {
+        if (this.spiritSelectIndex > 0) {
             this.setData({
-                [`spiritList[${that.spiritSelectIndex - 1}].active`]: false
+                [`spiritList[${this.spiritSelectIndex - 1}].active`]: false
             });
         }
-        that.spiritSelectIndex = index + 1;
+        this.spiritSelectIndex = index + 1;
         // if (e.touches.length < 2) {
         this.selectSpiritList[index] = {
-            x: e.touches[0].pageX * that.pixelRatio,
-            y: e.touches[0].pageY * that.pixelRatio,
+            x: e.touches[0].pageX * this.pixelRatio,
+            y: e.touches[0].pageY * this.pixelRatio,
         };
         // } else {
         //     this.spiritPoint = {
-        //         x1: e.touches[0].pageX * that.pixelRatio,
-        //         y1: e.touches[0].pageY * that.pixelRatio,
-        //         x2: e.touches[1].pageX * that.pixelRatio,
-        //         y2: e.touches[1].pageY * that.pixelRatio,
+        //         x1: e.touches[0].pageX * this.pixelRatio,
+        //         y1: e.touches[0].pageY * this.pixelRatio,
+        //         x2: e.touches[1].pageX * this.pixelRatio,
+        //         y2: e.touches[1].pageY * this.pixelRatio,
         //     };
         // }
         this.setData({
@@ -199,43 +216,43 @@ Page({
             return;
         }
         const that = this
-            , touchX = e.touches[0].pageX * that.pixelRatio
-            , touchY = e.touches[0].pageY * that.pixelRatio;
-        // if (e.touches.length < 2 && that.spiritPoint.hasOwnProperty('x')) {
-            // 移动
-            const diffx = touchX - that.selectSpiritList[index].x
-                , diffy = touchY - that.selectSpiritList[index].y
-                , left = that.data.spiritList[index].x + diffx
-                , top = that.data.spiritList[index].y + diffy;
-            that.selectSpiritList[index] = {
-                x: touchX,
-                y: touchY,
-            };
-            that.setData({
-                [`spiritList[${index}].x`]: left,
-                [`spiritList[${index}].y`]: top,
-            });
+            , touchX = e.touches[0].pageX * this.pixelRatio
+            , touchY = e.touches[0].pageY * this.pixelRatio;
+        // if (e.touches.length < 2 && this.spiritPoint.hasOwnProperty('x')) {
+        // 移动
+        const diffx = touchX - this.selectSpiritList[index].x
+            , diffy = touchY - this.selectSpiritList[index].y
+            , left = this.data.spiritList[index].x + diffx
+            , top = this.data.spiritList[index].y + diffy;
+        this.selectSpiritList[index] = {
+            x: touchX,
+            y: touchY,
+        };
+        this.setData({
+            [`spiritList[${index}].x`]: left,
+            [`spiritList[${index}].y`]: top,
+        });
         // }  else if (e.touches.length > 1) {
-        //     const preSpiritPoint = Object.assign({}, that.spiritPoint);
-        //     that.spiritPoint = {
-        //         x1: e.touches[0].pageX * that.pixelRatio,
-        //         y1: e.touches[0].pageY * that.pixelRatio,
-        //         x2: e.touches[1].pageX * that.pixelRatio,
-        //         y2: e.touches[1].pageY * that.pixelRatio,
+        //     const preSpiritPoint = Object.assign({}, this.spiritPoint);
+        //     this.spiritPoint = {
+        //         x1: e.touches[0].pageX * this.pixelRatio,
+        //         y1: e.touches[0].pageY * this.pixelRatio,
+        //         x2: e.touches[1].pageX * this.pixelRatio,
+        //         y2: e.touches[1].pageY * this.pixelRatio,
         //     };
         //     // 计算角度，旋转(优先)
         //     const perAngle = Math.atan((preSpiritPoint.y1 - preSpiritPoint.y2) / (preSpiritPoint.x1 - preSpiritPoint.x2)) * 180 / Math.PI;
-        //     const curAngle = Math.atan((that.spiritPoint.y1 - that.spiritPoint.y2)/(that.spiritPoint.x1 - that.spiritPoint.x2))*180/Math.PI;
+        //     const curAngle = Math.atan((this.spiritPoint.y1 - this.spiritPoint.y2)/(this.spiritPoint.x1 - this.spiritPoint.x2))*180/Math.PI;
         //     if (Math.abs(perAngle - curAngle) > 1) {
-        //         that.setData({
-        //             [`spiritList[${index}].rotate`]: that.data.rotate + (curAngle - perAngle)
+        //         this.setData({
+        //             [`spiritList[${index}].rotate`]: this.data.rotate + (curAngle - perAngle)
         //         })
         //     }else {
         //         // 计算距离，缩放
         //         const preDistance = Math.sqrt(Math.pow((preSpiritPoint.x1 - preSpiritPoint.x2), 2) + Math.pow((preSpiritPoint.y1 - preSpiritPoint.y2), 2));
-        //         const curDistance = Math.sqrt(Math.pow((that.spiritPoint.x1 - that.spiritPoint.x2), 2) + Math.pow((that.spiritPoint.y1 - that.spiritPoint.y2), 2));
-        //         that.setData({
-        //             [`spiritList[${index}].scale`]: that.data.scale + (curDistance - preDistance) * 0.005
+        //         const curDistance = Math.sqrt(Math.pow((this.spiritPoint.x1 - this.spiritPoint.x2), 2) + Math.pow((this.spiritPoint.y1 - this.spiritPoint.y2), 2));
+        //         this.setData({
+        //             [`spiritList[${index}].scale`]: this.data.scale + (curDistance - preDistance) * 0.005
         //         })
         //     }
         // }
@@ -265,5 +282,28 @@ Page({
         this.setData({
             [`spiritList[${spiritSelectIndex}].rotate`]: val,
         });
+    },
+    jonCySpiritTap(e) {
+        const index = (e.currentTarget.dataset.id || 0) - 1
+            , cySpirit = this.data.cySpiritList[index];
+        if (index < 0) {
+            return;
+        }
+        spiritAppendFun.call(this, cySpirit, true);
+        this.setData({
+            cySpiritHide: true
+        })
+    },
+    jonCySpiritClearTap(e) {
+        this.setData({
+            cySpiritHide: true,
+            spiritList: [],
+            spiritListOld: [],
+        })
+    },
+    jonCySpiritCloseTap(e) {
+        this.setData({
+            cySpiritHide: true
+        })
     }
 })

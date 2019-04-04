@@ -7,7 +7,7 @@
                         bind:drag="jonScaleChange" />
         </view>
         <view class="jtoolbar-center">
-1
+            
         </view>
         <view class="jtoolbar-right">
             <van-slider custom-class="jslider"
@@ -42,5 +42,12 @@
                 catchtouchend="jonSpiritTouchend"
                 style="z-index: {{ item.zIndex }}; width: {{ item.width }}px; height: {{ item.height }}px; left: {{ item.x }}px; top: {{ item.y }}px; transform: scale({{ item.scale }}) rotate({{ item.rotate }}deg);">
         <cover-image src="{{ item.path }}"></cover-image>
+    </cover-view>
+    <cover-view hidden="{{ cySpiritHide }}" class="jview-cytool">
+        <cover-image src="/assets/images/clear.png" class="jview-cytool-clear" catchtap="jonCySpiritClearTap"></cover-image>
+        <cover-image src="/assets/images/close.png" class="jview-cytool-close" catchtap="jonCySpiritCloseTap"></cover-image>
+        <cover-image wx:for="{{ cySpiritList }}" wx:key="id" src="{{ item.tempFilePath }}"
+                     data-id="{{ item.id }}"
+                     class="jview-cytool-item" catchtap="jonCySpiritTap"></cover-image>
     </cover-view>
 </view>
