@@ -1,21 +1,18 @@
-/**index.wxss**/
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.jview-logo,
+.jview-spirit,
+.jview-select-image {
+    margin-top: 60rpx;
+    text-align: center;
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.jview-logo>image {
+    width: 375rpx;
+    height: 79rpx;
 }
-
-.userinfo-nickname {
-  color: #aaa;
+.jview-spirit>image {
+    width: 360rpx;
+    height: 360rpx;
 }
-
-.usermotto {
-  margin-top: 200px;
+.jview-select-image>image {
+    width: 442rpx;
+    height: 104rpx;
 }

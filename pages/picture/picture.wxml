@@ -3,16 +3,16 @@
         <view class="jtoolbar-left">
             <van-slider custom-class="jslider"
                         active-color="#f44"
-                        value="50" bar-height="4px"
+                        value="{{ toolbar.defaultValue }}" bar-height="4px"
                         bind:drag="jonScaleChange" />
         </view>
         <view class="jtoolbar-center">
-            
+            <image catchtap="jonSpiritMoreTap" src="/assets/images/spirit.png"></image>
         </view>
         <view class="jtoolbar-right">
             <van-slider custom-class="jslider"
                         active-color="#f44"
-                        value="50" bar-height="4px"
+                        value="{{ toolbar.defaultValue }}" bar-height="4px"
                         bind:drag="jonRotateChange" />
         </view>
     </view>
@@ -32,6 +32,7 @@
     <cover-view class="jview-spirit-old"
                 wx:for="{{ spiritListOld }}" wx:key="id"
                 data-id="{{ item.id }}"
+                hidden="{{ item.isCySpirit }}"
                 style="z-index: {{ item.zIndex }}; width: {{ item.width }}px; height: {{ item.height }}px; left: {{ item.x }}px; top: {{ item.y }}px;">
     </cover-view>
     <cover-view class="jview-spirit{{ item.active ? ' jview-spirit-active' : ''}}"

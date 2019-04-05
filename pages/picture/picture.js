@@ -1,18 +1,25 @@
-const util = require('../../utils/util.js')
-const app = getApp()
+const util = require('../../utils/util.js');
+const app = getApp();
+
+/**
+ * 追加精灵
+ * @param res 图片数据对象
+ * @param isCySpirit 是否是选择CY精灵
+ */
 const spiritAppendFun = function (res, isCySpirit = false) {
     const spiritList = this.data.spiritList
         , spiritListOld = this.data.spiritListOld
         , id = spiritList.length + 1
         , spirit = {
-        id: id,
-        path: res.tempFilePath,
-        x: isCySpirit ? this.screenWidth * 0.5 : this.screenPos.minX * this.pixelRatio,
-        y: isCySpirit ? this.screenHeight * 0.5 : (this.screenPos.minY + this.data.toolbar.height) * this.pixelRatio,
-        width: isCySpirit ? 100 : (this.screenPos.maxX - this.screenPos.minX) * this.pixelRatio,
-        height: isCySpirit ? 100 : (this.screenPos.maxY - this.screenPos.minY) * this.pixelRatio,
-        zIndex: 500 + id,
-    };
+            id: id,
+            path: res.tempFilePath,
+            x: isCySpirit ? this.screenWidth * 0.5 : this.screenPos.minX * this.pixelRatio,
+            y: isCySpirit ? this.screenHeight * 0.5 : (this.screenPos.minY + this.data.toolbar.height) * this.pixelRatio,
+            width: isCySpirit ? 100 : (this.screenPos.maxX - this.screenPos.minX) * this.pixelRatio,
+            height: isCySpirit ? 100 : (this.screenPos.maxY - this.screenPos.minY) * this.pixelRatio,
+            zIndex: 500 + id,
+            isCySpirit: isCySpirit
+        };
     spiritListOld.push(spirit);
     if (this.spiritSelectIndex > 0) {
         spiritList[this.spiritSelectIndex - 1].active = false;
@@ -32,28 +39,32 @@ const spiritAppendFun = function (res, isCySpirit = false) {
 
 Page({
     data: {
+        // 精灵集合
         spiritList: [],
+        // 历史精灵集合（用做切图白色背景）
         spiritListOld: [],
+        // 缩放/选择 工具条
         toolbar: {
-            height: 40
+            height: 40,
+            defaultValue: 50
         },
+        // 场景Canvas
         sceneCanvas: {
             width: 100,
             height: 100,
         },
-        cySpiritHide: false,
+        // cy精灵是否异常
+        cySpiritHide: true,
+        // cy精灵集合
         cySpiritList: [{
             id: 1,
-            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+            tempFilePath: '/assets/images/spirit_1.jpg'
         }, {
             id: 2,
-            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+            tempFilePath: '/assets/images/spirit_2.jpg'
         }, {
             id: 3,
-            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
-        }, {
-            id: 4,
-            tempFilePath: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1910173974,2425346557&fm=58&bpow=2430&bpoh=3240'
+            tempFilePath: '/assets/images/spirit_3.png'
         }]
     },
     onLoad: function () {
@@ -79,7 +90,9 @@ Page({
         this.ctxSelect.strokeStyle = "red";
 
         this.ctx = wx.createCanvasContext('J_canvasBg');
-        this.ctx.drawImage(selectImage.path, 0, 0, screenWidth, screenWidth / selectImage.width * selectImage.height);
+        if (selectImage) {
+            this.ctx.drawImage(selectImage.path, 0, 0, screenWidth, screenWidth / selectImage.width * selectImage.height);
+        }
         this.ctx.draw();
     },
     onResize(res) {
@@ -92,6 +105,8 @@ Page({
             , sceneHeight = screenHeight - this.data.toolbar.height
             , selectImage = app.jonGetPicture()
             , pixelRatio = 1;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
         this.setData({
             ['sceneCanvas.width']: sceneWidth * pixelRatio,
             ['sceneCanvas.height']: sceneHeight * pixelRatio,
@@ -292,18 +307,26 @@ Page({
         spiritAppendFun.call(this, cySpirit, true);
         this.setData({
             cySpiritHide: true
-        })
+        });
     },
     jonCySpiritClearTap(e) {
         this.setData({
             cySpiritHide: true,
             spiritList: [],
             spiritListOld: [],
-        })
+            'toolbar.defaultValue': 50
+        });
+        this.spiritSelectIndex = 0;
+        this.selectSpiritList = [];
     },
     jonCySpiritCloseTap(e) {
         this.setData({
             cySpiritHide: true
-        })
+        });
+    },
+    jonSpiritMoreTap(e) {
+        this.setData({
+            cySpiritHide: false
+        });
     }
 })

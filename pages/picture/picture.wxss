@@ -13,16 +13,16 @@
     z-index: 500;
 }
 .jview-spirit {
-    border: 2rpx solid white;
-    border-radius: 6rpx;
+    border: 1px solid white;
+    border-radius: 3px;
     /*box-shadow:0 4rpx 16rpx rgba(0,0,0,0.2);*/
 }
 .jview-spirit-old {
     background: rgba(255,255,255,.8);
-    border-radius: 6rpx;
+    border-radius: 3px;
 }
 .jview-spirit-active {
-    border: 2rpx solid #f44;
+    border: 1px solid #f44;
     /*box-shadow:0 16rpx 16rpx rgba(0,0,0,0.4);*/
 }
 .jtoolbar {
@@ -41,7 +41,12 @@
     flex: 1;
 }
 .jtoolbar-center {
-    width: 100rpx;
+    width: 50px;
+    text-align: center;
+}
+.jtoolbar-center>image {
+    width: 40px;
+    height: 40px;
 }
 .jslider {
     margin: 15px 16rpx 0 16rpx;
@@ -57,22 +62,22 @@
     background: rgba(0, 0, 0, .6);
 }
 .jview-cytool-item {
-    width: 200rpx;
-    height: 200rpx;
-    margin: 40rpx 0 0 40rpx;
+    width: 100px;
+    height: 100px;
+    margin: 20px 0 0 20px;
     float: left;
 }
 .jview-cytool-clear,
 .jview-cytool-close {
     position: absolute;
-    width: 154rpx;
-    height: 54rpx;
-    top: 10px;
+    width: 77px;
+    height: 27px;
+    top: 15px;
     z-index: 992;
 }
 .jview-cytool-clear {
-    left: 40rpx;
+    left: 20px;
 }
 .jview-cytool-close {
-    right: 40rpx;
+    right: 20px;
 }

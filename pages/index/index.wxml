@@ -1,6 +1,11 @@
-<!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button bindtap="jonGetPicture"> 选择文件 </button>
-  </view>
+    <view class="jview-logo">
+        <image src="/assets/images/logo.png"></image>
+    </view>
+    <view class="jview-spirit">
+        <image src="/assets/images/spirit_1.jpg"></image>
+    </view>
+    <view class="jview-select-image">
+        <image catchtap="jonGetPicture" src="/assets/images/select_image.png"></image>
+    </view>
 </view>
